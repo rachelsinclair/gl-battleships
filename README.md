@@ -34,3 +34,26 @@ This is the first time I've used Node in my current development OS, which is an 
 - Created .gitignore file for the `node_modules` directory
 
 This should be enough setup for me to crack on with the task. The fun begins tomorrow!
+
+---
+
+...aaaaaaaaaaaand then I decided we should give TypeScript a go.
+
+- Installed a bunch of TS packages:
+    ```
+    npm install typescript ts-node @types/chai @types/mocha @types/node --save-dev
+    ```
+
+- Initialised tsconfig.jscon with a script based on [this handy script from Khalil Stemmler](https://khalilstemmler.com/blogs/typescript/node-starter-project/):
+    ```
+    npx tsc --init --rootDir src --outDir build \
+    --esModuleInterop --resolveJsonModule --target ES6 \
+    --module commonjs --allowJs true --noImplicitAny true
+    ```
+    NB: the original script was giving me issues with 'console' so removed --lib option and added --target after reading the [TS compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+
+- Created src and build folders and added the latter to .gitignore)
+
+- Amended mocha test script in package.json to look for tests in the correct files.
+
+Why did I think it was a good idea to do this to myself. Why.
