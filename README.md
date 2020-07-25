@@ -22,4 +22,15 @@ This is the first time I've used Node in my current development OS, which is an 
 
 - Created directory for the new repo, including this snazzy README file
 
-- Created repo on GitHub and pushed out my first commit (this thing!)
+- Created repo on GitHub and pushed out my first commit
+
+- Initialised npm project: `npm init`
+
+- Installed Mocha and Chai:
+    ```
+    npm i --save-dev mocha chai
+    ```
+
+- Created .gitignore file for the `node_modules` directory
+
+This should be enough setup for me to crack on with the task. The fun begins tomorrow!

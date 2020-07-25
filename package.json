@@ -1,0 +1,23 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "Implementation of Battleships for Guestline code test",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rachelsinclair/gl-battleships.git"
+  },
+  "author": "Rachel Sinclair",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rachelsinclair/gl-battleships/issues"
+  },
+  "homepage": "https://github.com/rachelsinclair/gl-battleships#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1"
+  }
+}
