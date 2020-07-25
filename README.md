@@ -2,7 +2,7 @@
 
 Task and background here: https://medium.com/guestline-labs/hints-for-our-interview-process-and-code-test-ae647325f400
 
-First, I spent a ittle time considering functionality. I've already got some ideas about how I want to implement certain things, such as placement of ships on the gameboard. Let's not get too caught up in that yet. There's plenty more ground to cover first. 
+First, I spent a little time considering functionality. I've already got some ideas about how I want to implement certain things, such as placement of ships on the gameboard. Let's not get too caught up in that yet. There's plenty more ground to cover first. 
 
 Looked up Bowling Game kata - fell into a web of Uncle Bob articles about TDD.
 
