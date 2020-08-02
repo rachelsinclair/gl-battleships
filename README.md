@@ -73,9 +73,3 @@ Try as I might, nothing was coming through. I was stuck in a rut. So, I stepped 
 ### The first test
 
 It has been written. It can only get better from here.
-
----
-
-### Actually, fuck TypeScript
-
-My brain has been fried by yet another week of miserable (non-tech) work. I've got the rest of my life to pick a fight with TypeScript. Not today.
