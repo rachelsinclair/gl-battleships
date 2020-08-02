@@ -1,10 +1,10 @@
 {
-  "name": "battleship",
+  "name": "GL-Battleships",
   "version": "1.0.0",
   "description": "Implementation of Battleships for Guestline code test",
-  "main": "battleship.js",
+  "main": "battleships.js",
   "scripts": {
-    "test": "mocha src/*.test.ts -r ts-node/register"
+    "test": "mocha *.test.js"
   },
   "repository": {
     "type": "git",
@@ -17,13 +17,8 @@
   },
   "homepage": "https://github.com/rachelsinclair/gl-battleships#readme",
   "devDependencies": {
-    "@types/chai": "^4.2.12",
-    "@types/mocha": "^8.0.0",
-    "@types/node": "^14.0.26",
     "chai": "^4.2.0",
-    "mocha": "^8.0.1",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "mocha": "^8.0.1"
   },
   "dependencies": {}
 }

@@ -1,6 +1,4 @@
 # npm dependencies
 node_modules/
-# Built files
-build/
 # VS code workspace
 *.code-workspace
