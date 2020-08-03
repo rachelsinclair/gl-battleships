@@ -1,10 +1,11 @@
 {
-  "name": "battleship",
+  "name": "gl-battleships",
   "version": "1.0.0",
   "description": "Implementation of Battleships for Guestline code test",
-  "main": "battleship.js",
+  "main": "battleships.js",
   "scripts": {
-    "test": "mocha src/*.test.ts -r ts-node/register"
+    "test": "mocha src/*.test.ts -r ts-node/register",
+    "test:watch": "npm test -- --watch --extension ts"
   },
   "repository": {
     "type": "git",
