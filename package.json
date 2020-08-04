@@ -4,7 +4,7 @@
   "description": "Implementation of Battleships for Guestline code test",
   "main": "battleships.js",
   "scripts": {
-    "test": "mocha src/*.test.ts -r ts-node/register",
+    "test": "mocha -r ts-node/register src/*.test.ts",
     "test:watch": "npm test -- --watch --extension ts"
   },
   "repository": {

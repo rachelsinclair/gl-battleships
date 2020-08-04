@@ -2,13 +2,35 @@ export class Board {
     readonly columns: number = 10;
     readonly rows: number = 10;
 
-    numberOfShips: number = 0;
+    addShip(ship: Ship, coordinates: Coordinates) {
+        if (coordinates.row < 0 || coordinates.column < 0) {
+            return false;
+        }
+        return this.canPlaceShip(ship, coordinates);
+    }
 
-    addShip() {
-        this.numberOfShips += 1;
+    canPlaceShip(ship: Ship, coordinates: Coordinates) {
+        if (ship.orientation === Orientation.Horizontal) {
+            return coordinates.row < this.rows && coordinates.column + ship.length <= this.columns;
+        }
+        else {
+            return coordinates.column < this.columns && coordinates.row + ship.length <= this.rows;
+        }
     }
 }
 
+export enum Orientation {
+    Vertical,
+    Horizontal
+}
+
 export class Ship {
-    readonly length = 0;
+    constructor(public readonly orientation: Orientation){}
+
+    readonly length = 4;
+}
+
+interface Coordinates {
+    row: number;
+    column: number;
 }
