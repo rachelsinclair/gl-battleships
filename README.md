@@ -79,3 +79,7 @@ It has been written. It can only get better from here.
 I threw a tantrum around here and removed TypeScript from the project for an evening. After playing around with Mocha and esm for while, I've climbed down from the walls a bit and reverted the commit.
 
 At times, I've felt It's seemed so silly to have spent so long on this task. It's simple enough, right? I have to keep reminding myself that I'm trying to accomplish more than just throwing out a solution that looks half-decent. I'm getting back to grips with the frustrating aspects of development.
+
+---
+
+Hrfff. Okay! Got a couple of unit tests set up. I'm not 100% convinced I'm angling at the right thing with them, but let's just work with it for now.
