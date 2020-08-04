@@ -1,20 +1,28 @@
 export class Board {
     readonly columns: number = 10;
     readonly rows: number = 10;
+    private shipList: Ship[] = [];
 
-    addShip(ship: Ship, coordinates: Coordinates) {
-        if (coordinates.row < 0 || coordinates.column < 0) {
+    addShip(ship: Ship) {
+        if (!this.canPlaceShip(ship)) {
             return false;
         }
-        return this.canPlaceShip(ship, coordinates);
+        this.shipList.push(ship);
+        return true;
     }
 
-    canPlaceShip(ship: Ship, coordinates: Coordinates) {
+    private canPlaceShip(ship: Ship) {
+        if (this.shipList.some(shipInList => ship.intersectsWith(shipInList))) {
+            return false;
+        }
+        if (ship.coordinates.row < 0 || ship.coordinates.column < 0) {
+            return false;
+        }
         if (ship.orientation === Orientation.Horizontal) {
-            return coordinates.row < this.rows && coordinates.column + ship.length <= this.columns;
+            return ship.coordinates.row < this.rows && ship.coordinates.column + ship.length <= this.columns;
         }
         else {
-            return coordinates.column < this.columns && coordinates.row + ship.length <= this.rows;
+            return ship.coordinates.column < this.columns && ship.coordinates.row + ship.length <= this.rows;
         }
     }
 }
@@ -25,9 +33,14 @@ export enum Orientation {
 }
 
 export class Ship {
-    constructor(public readonly orientation: Orientation){}
-
+    constructor(public readonly orientation: Orientation, public readonly coordinates: Coordinates){}
     readonly length = 4;
+
+    intersectsWith (otherShip: Ship) {
+        if (this.coordinates.row === otherShip.coordinates.row && this.coordinates.column === otherShip.coordinates.column) {
+            return true;
+        }
+    }
 }
 
 interface Coordinates {

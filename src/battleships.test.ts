@@ -26,51 +26,73 @@ describe("Board class", function() {
         describe("adding ship to empty board",function() {
             it("should return true when added successfully", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Horizontal)
-                expect(testBoard.addShip(testShip, {row: 0, column: 0})).to.be.true;
+                const testShip = new Ship(Orientation.Horizontal, {row: 0, column: 0})
+                expect(testBoard.addShip(testShip)).to.be.true;
             })
             it("should return false when attempting to place ship on a row that is too large", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Horizontal)
-                expect(testBoard.addShip(testShip, {row: 99, column: 0})).to.be.false;
+                const testShip = new Ship(Orientation.Horizontal, {row: 99, column: 0})
+                expect(testBoard.addShip(testShip)).to.be.false;
             })
             it("should return false when attempting to place ship on a row that is too small", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Horizontal)
-                expect(testBoard.addShip(testShip, {row: -99, column: 0})).to.be.false;
+                const testShip = new Ship(Orientation.Horizontal, {row: -99, column: 0})
+                expect(testBoard.addShip(testShip)).to.be.false;
             })
             it("should return false when attempting to place ship out of bounds (horizontal)", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Horizontal)
-                expect(testBoard.addShip(testShip, {row: 99, column: 0})).to.be.false;
+                const testShip = new Ship(Orientation.Horizontal, {row: 99, column: 0})
+                expect(testBoard.addShip(testShip)).to.be.false;
             })
             it("should allow us to place horizontal ship right up to the edge", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Horizontal)
-                expect(testBoard.addShip(testShip, {row: 0, column: 6})).to.be.true;
+                const testShip = new Ship(Orientation.Horizontal, {row: 0, column: 6})
+                expect(testBoard.addShip(testShip)).to.be.true;
             })
             it("should not allow horizontal ship to go just over the edge", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Horizontal)
-                expect(testBoard.addShip(testShip, {row: 0, column: 7})).to.be.false;
+                const testShip = new Ship(Orientation.Horizontal, {row: 0, column: 7})
+                expect(testBoard.addShip(testShip)).to.be.false;
             })
             it("should allow us to place vertical ship right up to the edge", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Vertical)
-                expect(testBoard.addShip(testShip, {row: 6, column: 0})).to.be.true;
+                const testShip = new Ship(Orientation.Vertical, {row: 6, column: 0})
+                expect(testBoard.addShip(testShip)).to.be.true;
             })
             it("should not allow vertical ship to go just over the edge", function() {
                 const testBoard = new Board();
-                const testShip = new Ship(Orientation.Vertical)
-                expect(testBoard.addShip(testShip, {row: 7, column: 0})).to.be.false;
+                const testShip = new Ship(Orientation.Vertical, {row: 7, column: 0})
+                expect(testBoard.addShip(testShip)).to.be.false;
             })
-        })
+        }), {row: 0, column: 0}
+        describe("adding a second ship to the board", function () {
+            it("should fail if you try to place a second ship on the same coordinate as the first", function() {
+                const testBoard = new Board();
+                const testShip = new Ship(Orientation.Horizontal, {row: 0, column: 0});
+                expect(testBoard.addShip(testShip)).to.be.true;
+                expect(testBoard.addShip(testShip)).to.be.false;
+            })
+            it("should pass if you try to place a second ship in a completely empty segment", function() {
+                const testBoard = new Board();
+                const testShip = new Ship(Orientation.Horizontal, {row: 0, column: 0});
+                const testShip2 = new Ship(Orientation.Horizontal, {row: 1, column: 0});
+                expect(testBoard.addShip(testShip)).to.be.true;
+                expect(testBoard.addShip(testShip2)).to.be.true;
+            })
+            it("should fail if you try to place a second ship in the coordinate immediately next to the first ship", function() {
+                const testBoard = new Board();
+                const testShip = new Ship(Orientation.Horizontal, {row: 0, column: 0});
+                const testShip2 = new Ship(Orientation.Horizontal, {row: 0, column: 1});
+                expect(testBoard.addShip(testShip)).to.be.true;
+                expect(testBoard.addShip(testShip2)).to.be.false;
+            })
+        })     
     })
 })
 
 describe("Ship class", function(){
     describe("Ship constructor", function(){
-        const testShip = new Ship(Orientation.Horizontal);
+        const testShip = new Ship(Orientation.Horizontal, {row: 0, column: 0});
         it("should create an instance of class Ship", function(){
             expect(testShip).to.be.instanceof(Ship);
         })
