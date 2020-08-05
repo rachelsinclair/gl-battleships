@@ -20,7 +20,7 @@ export class Board {
         }
     }
 
-    private isCoordOnBoard(coord: Coordinates) : boolean {
+    private isCoordOnBoard(coord: Coordinate) : boolean {
         return (coord.row >=0 && coord.row < this.rows) && (coord.column >= 0 && coord.column < this.columns);
     }
 }
@@ -31,38 +31,38 @@ export enum Orientation {
 }
 
 export class Ship {
-    constructor(public readonly orientation: Orientation, public readonly firstCoordinate: Coordinates){}
+    constructor(public readonly orientation: Orientation, public readonly firstCoordinate: Coordinate){}
     readonly length = 4;
 
     intersectsWith (otherShip: Ship) : boolean {
         return this.getAllCoords().some(ship1Coord => otherShip.getAllCoords().some(ship2Coord => ship1Coord.equalTo(ship2Coord)))
     }
 
-    getAllCoords() : Coordinates[] {
+    getAllCoords() : Coordinate[] {
         if (this.orientation === Orientation.Horizontal) {
-            return [...Array(this.length).keys()].map(i => new Coordinates(this.firstCoordinate.row, this.firstCoordinate.column + i));        
+            return [...Array(this.length).keys()].map(i => new Coordinate(this.firstCoordinate.row, this.firstCoordinate.column + i));        
         }
         else {
-            return [...Array(this.length).keys()].map(i => new Coordinates(this.firstCoordinate.row + i, this.firstCoordinate.column));        
+            return [...Array(this.length).keys()].map(i => new Coordinate(this.firstCoordinate.row + i, this.firstCoordinate.column));        
         }
     }
 }
 
-export class Coordinates {
+export class Coordinate {
     constructor(public readonly row: number, public readonly column: number){
         
     }
 
-    equalTo(coord: Coordinates) : boolean {
+    equalTo(coord: Coordinate) : boolean {
         return (this.row === coord.row) && (this.column === coord.column);
     }
 
-    getNextCoordinate(direction : Orientation) : Coordinates {
+    getNextCoordinate(direction : Orientation) : Coordinate {
         if (direction === Orientation.Vertical) {
-            return new Coordinates(this.row+1,this.column);
+            return new Coordinate(this.row+1,this.column);
         }
         else {
-            return new Coordinates(this.row,this.column + 1);
+            return new Coordinate(this.row,this.column + 1);
         }
     }
 }
