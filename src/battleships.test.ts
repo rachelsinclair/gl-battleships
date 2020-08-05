@@ -165,7 +165,7 @@ describe("Ship class", function(){
     })
 })
 
-describe("Coordinates class", function() {
+describe("Coordinate class", function() {
     describe("equalTo function", function() {
         it("should return true when checking a set of coordinates against itself", function() {
            const testCoordinates = new Coordinates(1, 2);
@@ -188,6 +188,25 @@ describe("Coordinates class", function() {
             const testCoordinates = new Coordinates(1, 2);
             const testCoordinates2 = new Coordinates(0, 2);
             expect(testCoordinates.equalTo(testCoordinates2)).to.be.false;
+        })
+    })
+    describe("getNextCoordinate function", function() {
+        it("should return a Coordinate", function () {
+            expect(new Coordinates(0,0).getNextCoordinate(Orientation.Vertical)).to.be.instanceOf(Coordinates);
+        })
+        it("should return next vertical Coordinate", function () {
+            expect(new Coordinates(0,0).getNextCoordinate(Orientation.Vertical).equalTo(new Coordinates(1,0))).to.be.true;
+        })
+        it("should be able to chain the function", function () {
+            expect(new Coordinates(0,0).getNextCoordinate(Orientation.Vertical).getNextCoordinate(Orientation.Vertical).equalTo(new Coordinates(2,0))).to.be.true;
+        })
+        it("should return next horizontal coordinate", function() {
+            expect(new Coordinates(0,0).getNextCoordinate(Orientation.Horizontal).equalTo(new Coordinates(0,1))).to.be.true;
+        })
+        it("should be commutative (if it is applied twice, the order it is applied in should not matter)", function() {
+            const verticalThenHorizontal = new Coordinates(0,0).getNextCoordinate(Orientation.Vertical).getNextCoordinate(Orientation.Horizontal);
+            const horizontalThenVertical = new Coordinates(0,0).getNextCoordinate(Orientation.Horizontal).getNextCoordinate(Orientation.Vertical);
+            expect(verticalThenHorizontal.equalTo(horizontalThenVertical)).to.be.true;
         })
     })
 })

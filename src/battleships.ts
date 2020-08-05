@@ -49,9 +49,20 @@ export class Ship {
 }
 
 export class Coordinates {
-    constructor(public readonly row: number, public readonly column: number){}
+    constructor(public readonly row: number, public readonly column: number){
+        
+    }
 
-    equalTo(otherCoord: Coordinates) : boolean {
-        return (this.row === otherCoord.row) && (this.column === otherCoord.column);
+    equalTo(coord: Coordinates) : boolean {
+        return (this.row === coord.row) && (this.column === coord.column);
+    }
+
+    getNextCoordinate(direction : Orientation) : Coordinates {
+        if (direction === Orientation.Vertical) {
+            return new Coordinates(this.row+1,this.column);
+        }
+        else {
+            return new Coordinates(this.row,this.column + 1);
+        }
     }
 }
