@@ -3,7 +3,7 @@ export class Board {
     readonly rows: number = 10;
     private shipList: Ship[] = [];
 
-    addShip(ship: Ship) {
+    addShip(ship: Ship) : boolean {
         if (!this.canPlaceShip(ship)) {
             return false;
         }
@@ -11,19 +11,17 @@ export class Board {
         return true;
     }
 
-    private canPlaceShip(ship: Ship) {
+    private canPlaceShip(ship: Ship) : boolean {
         if (this.shipList.some(shipInList => ship.intersectsWith(shipInList))) {
             return false;
         }
-        if (ship.coordinates.row < 0 || ship.coordinates.column < 0) {
-            return false;
-        }
-        if (ship.orientation === Orientation.Horizontal) {
-            return ship.coordinates.row < this.rows && ship.coordinates.column + ship.length <= this.columns;
-        }
         else {
-            return ship.coordinates.column < this.columns && ship.coordinates.row + ship.length <= this.rows;
+            return ship.getAllCoords().every(coord => this.isCoordOnBoard(coord));
         }
+    }
+
+    private isCoordOnBoard(coord: Coordinates) : boolean {
+        return (coord.row >=0 && coord.row < this.rows) && (coord.column >= 0 && coord.column < this.columns);
     }
 }
 
@@ -33,39 +31,27 @@ export enum Orientation {
 }
 
 export class Ship {
-    constructor(public readonly orientation: Orientation, public readonly coordinates: Coordinates){}
+    constructor(public readonly orientation: Orientation, public readonly firstCoordinate: Coordinates){}
     readonly length = 4;
 
     intersectsWith (otherShip: Ship) : boolean {
-        if (this.coordinates.row === otherShip.coordinates.row && this.coordinates.column === otherShip.coordinates.column) {
-            return true;
-        }
-        else if (this.orientation === otherShip.orientation) {
-            if (this.orientation === Orientation.Horizontal) {
-                return (this.coordinates.row === otherShip.coordinates.row && this.getRange().some(value => otherShip.getRange().includes(value)))
-            }
-            else if (this.orientation === Orientation.Vertical) {
-                return (this.coordinates.column === otherShip.coordinates.column && this.getRange().some(value => otherShip.getRange().includes(value)))
-            }
-        }
-        else {
-            //not implemented yet
-            return false;
-        }
-        return false;
+        return this.getAllCoords().some(ship1Coord => otherShip.getAllCoords().some(ship2Coord => ship1Coord.equalTo(ship2Coord)))
     }
 
-    private getRange() : number[] {
-        let range = [];
-        let firstValue = this.orientation === Orientation.Horizontal ? this.coordinates.column : this.coordinates.row;
-        for (let i = 0; i < this.length; i++) {
-            range.push(firstValue + i);
+    getAllCoords() : Coordinates[] {
+        if (this.orientation === Orientation.Horizontal) {
+            return [...Array(this.length).keys()].map(i => new Coordinates(this.firstCoordinate.row, this.firstCoordinate.column + i));        
         }
-        return range;
+        else {
+            return [...Array(this.length).keys()].map(i => new Coordinates(this.firstCoordinate.row + i, this.firstCoordinate.column));        
+        }
     }
 }
 
-interface Coordinates {
-    row: number;
-    column: number;
+export class Coordinates {
+    constructor(public readonly row: number, public readonly column: number){}
+
+    equalTo(otherCoord: Coordinates) : boolean {
+        return (this.row === otherCoord.row) && (this.column === otherCoord.column);
+    }
 }
