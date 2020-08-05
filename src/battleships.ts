@@ -36,10 +36,32 @@ export class Ship {
     constructor(public readonly orientation: Orientation, public readonly coordinates: Coordinates){}
     readonly length = 4;
 
-    intersectsWith (otherShip: Ship) {
+    intersectsWith (otherShip: Ship) : boolean {
         if (this.coordinates.row === otherShip.coordinates.row && this.coordinates.column === otherShip.coordinates.column) {
             return true;
         }
+        else if (this.orientation === otherShip.orientation) {
+            if (this.orientation === Orientation.Horizontal) {
+                return (this.coordinates.row === otherShip.coordinates.row && this.getRange().some(value => otherShip.getRange().includes(value)))
+            }
+            else if (this.orientation === Orientation.Vertical) {
+                return (this.coordinates.column === otherShip.coordinates.column && this.getRange().some(value => otherShip.getRange().includes(value)))
+            }
+        }
+        else {
+            //not implemented yet
+            return false;
+        }
+        return false;
+    }
+
+    private getRange() : number[] {
+        let range = [];
+        let firstValue = this.orientation === Orientation.Horizontal ? this.coordinates.column : this.coordinates.row;
+        for (let i = 0; i < this.length; i++) {
+            range.push(firstValue + i);
+        }
+        return range;
     }
 }
 
