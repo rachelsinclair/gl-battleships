@@ -83,3 +83,11 @@ At times, I've felt It's seemed so silly to have spent so long on this task. It'
 ---
 
 Hrfff. Okay! Got a couple of unit tests set up. I'm not 100% convinced I'm angling at the right thing with them, but let's just work with it for now.
+
+---
+
+Matt comes in to save the day! He really helped me to get this off the ground and reminded me of a few vital things. What I took away:
+- If you're struggling to choose between two different ways of implementing something, just pick one and try it.
+- Sloppy but working code now is better than perfect code never.
+
+Without defined time constraints, it's incredibly easy for me to overthink myself into inaction. When self-accountability is low, having somebody there who can kick me into action does wonders.
