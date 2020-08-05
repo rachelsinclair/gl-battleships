@@ -164,3 +164,30 @@ describe("Ship class", function(){
         })
     })
 })
+
+describe("Coordinates class", function() {
+    describe("equalTo function", function() {
+        it("should return true when checking a set of coordinates against itself", function() {
+           const testCoordinates = new Coordinates(1, 2);
+           expect(testCoordinates.equalTo(testCoordinates)).to.be.true;
+        })
+
+        it("should return true when two Coordinates match both row and column", function() {
+            const testCoordinates = new Coordinates(1, 2);
+            const testCoordinates2 = new Coordinates(1, 2);
+            expect(testCoordinates.equalTo(testCoordinates2)).to.be.true;
+        })
+
+         it("should return false when two Coordinates only have matching row", function() {
+            const testCoordinates = new Coordinates(1, 2);
+            const testCoordinates2 = new Coordinates(1, 3);
+            expect(testCoordinates.equalTo(testCoordinates2)).to.be.false;
+        })
+
+         it("should return false when two Coordinates only have matching column", function() {
+            const testCoordinates = new Coordinates(1, 2);
+            const testCoordinates2 = new Coordinates(0, 2);
+            expect(testCoordinates.equalTo(testCoordinates2)).to.be.false;
+        })
+    })
+})
