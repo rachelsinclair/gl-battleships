@@ -39,12 +39,13 @@ export class Ship {
     }
 
     getAllCoords() : Coordinate[] {
-        if (this.orientation === Orientation.Horizontal) {
-            return [...Array(this.length).keys()].map(i => new Coordinate(this.firstCoordinate.row, this.firstCoordinate.column + i));        
+        const coordList : Coordinate[] = [];
+        let currentCoordinate : Coordinate = this.firstCoordinate;
+        for (let i = 0; i < this.length; i++) {
+            coordList.push(currentCoordinate);
+            currentCoordinate = currentCoordinate.getNextCoordinate(this.orientation);
         }
-        else {
-            return [...Array(this.length).keys()].map(i => new Coordinate(this.firstCoordinate.row + i, this.firstCoordinate.column));        
-        }
+        return coordList;
     }
 }
 
