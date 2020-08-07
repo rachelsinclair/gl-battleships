@@ -31,8 +31,7 @@ export enum Orientation {
 }
 
 export class Ship {
-    constructor(public readonly orientation: Orientation, public readonly firstCoordinate: Coordinate){}
-    readonly length = 4;
+    constructor(public readonly orientation: Orientation, private firstCoordinate: Coordinate, private length : number){}
     readonly coordList : Coordinate[] = this.firstCoordinate.getRange(this.length, this.orientation);
 
     intersectsWith (otherShip: Ship) : boolean {
