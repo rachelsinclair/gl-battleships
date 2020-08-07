@@ -209,4 +209,31 @@ describe("Coordinate class", function() {
             expect(verticalThenHorizontal).to.deep.equal(horizontalThenVertical);
         })
     })
+
+    describe("getRange", function() {
+        it("should return an array", function () {
+            expect(new Coordinate(0, 0).getRange(1, Orientation.Horizontal)).to.be.instanceOf(Array);
+        })
+        it("should return an array of coordinates", function () {
+            expect(new Coordinate(0, 0).getRange(1, Orientation.Horizontal).every(item => item instanceof Coordinate)).to.be.true;
+        })
+        it("should return an array with a length provided by a parameter", function () {
+            expect(new Coordinate(0, 0).getRange(0, Orientation.Horizontal)).to.be.empty;
+            expect(new Coordinate(0, 0).getRange(1, Orientation.Horizontal)).to.have.lengthOf(1);
+            expect(new Coordinate(0, 0).getRange(2, Orientation.Horizontal)).to.have.lengthOf(2);
+        })
+        it("should return the original coordinate for length 1", function () {
+            expect(new Coordinate(0, 0).getRange(1, Orientation.Horizontal)).to.deep.equal([new Coordinate(0, 0)]);
+            expect(new Coordinate(1, 1).getRange(1, Orientation.Horizontal)).to.deep.equal([new Coordinate(1, 1)]);
+        })
+        it("should return the next n coordinates horizontally when specified", function () {
+            expect(new Coordinate(0, 0).getRange(2, Orientation.Horizontal)).to.deep.equal([new Coordinate(0, 0), new Coordinate(0,1)]);
+            expect(new Coordinate(0, 0).getRange(3, Orientation.Horizontal)).to.deep.equal([new Coordinate(0, 0), new Coordinate(0,1), new Coordinate(0,2)]);
+        })
+
+        it("should return the next n coordinates vertically when specified", function () {
+            expect(new Coordinate(0, 0).getRange(2, Orientation.Vertical)).to.deep.equal([new Coordinate(0, 0), new Coordinate(1,0)]);
+            expect(new Coordinate(0, 0).getRange(3, Orientation.Vertical)).to.deep.equal([new Coordinate(0, 0), new Coordinate(1,0), new Coordinate(2,0)]);
+        })
+    })
 })

@@ -50,8 +50,7 @@ export class Ship {
 }
 
 export class Coordinate {
-    constructor(public readonly row: number, public readonly column: number){
-        
+    constructor(public readonly row: number, public readonly column: number){        
     }
 
     equalTo(coord: Coordinate) : boolean {
@@ -65,5 +64,15 @@ export class Coordinate {
         else {
             return new Coordinate(this.row,this.column + 1);
         }
+    }
+
+    getRange(length : number, orientation : Orientation) : Coordinate[] {
+        let range : Coordinate[] = [];
+        let currentCoordinate = this as Coordinate;
+        for (let i = 0; i < length; i++) {
+            range.push(currentCoordinate);
+            currentCoordinate = currentCoordinate.getNextCoordinate(orientation);
+        }
+        return range;
     }
 }
