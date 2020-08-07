@@ -190,27 +190,27 @@ describe("Coordinate class", function() {
             expect(testCoordinates.equalTo(testCoordinates2)).to.be.false;
         })
     })
-    describe("getNextCoordinate function", function() {
+    describe("getNext function", function() {
         it("should return a Coordinate", function () {
-            expect(new Coordinate(0,0).getNextCoordinate(Orientation.Vertical)).to.be.instanceOf(Coordinate);
+            expect(new Coordinate(0,0).getNext(Orientation.Vertical)).to.be.instanceOf(Coordinate);
         })
         it("should return next vertical Coordinate", function () {
-            expect(new Coordinate(0,0).getNextCoordinate(Orientation.Vertical)).to.deep.equal(new Coordinate(1,0));
+            expect(new Coordinate(0,0).getNext(Orientation.Vertical)).to.deep.equal(new Coordinate(1,0));
         })
         it("should return next horizontal coordinate", function() {
-            expect(new Coordinate(0,0).getNextCoordinate(Orientation.Horizontal)).to.deep.equal(new Coordinate(0,1));
+            expect(new Coordinate(0,0).getNext(Orientation.Horizontal)).to.deep.equal(new Coordinate(0,1));
         })
         it("should be able to chain the function", function () {
-            expect(new Coordinate(0,0).getNextCoordinate(Orientation.Vertical).getNextCoordinate(Orientation.Vertical)).to.deep.equal(new Coordinate(2,0));
+            expect(new Coordinate(0,0).getNext(Orientation.Vertical).getNext(Orientation.Vertical)).to.deep.equal(new Coordinate(2,0));
         })
         it("should be commutative (if it is applied twice, the order it is applied in should not matter)", function() {
-            const verticalThenHorizontal = new Coordinate(0,0).getNextCoordinate(Orientation.Vertical).getNextCoordinate(Orientation.Horizontal);
-            const horizontalThenVertical = new Coordinate(0,0).getNextCoordinate(Orientation.Horizontal).getNextCoordinate(Orientation.Vertical);
+            const verticalThenHorizontal = new Coordinate(0,0).getNext(Orientation.Vertical).getNext(Orientation.Horizontal);
+            const horizontalThenVertical = new Coordinate(0,0).getNext(Orientation.Horizontal).getNext(Orientation.Vertical);
             expect(verticalThenHorizontal).to.deep.equal(horizontalThenVertical);
         })
     })
 
-    describe("getRange", function() {
+    describe("getRange function", function() {
         it("should return an array", function () {
             expect(new Coordinate(0, 0).getRange(1, Orientation.Horizontal)).to.be.instanceOf(Array);
         })
