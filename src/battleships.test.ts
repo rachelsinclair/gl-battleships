@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { Board, Ship, Orientation, Coordinate } from "./battleships";
+import { Board, Ship, Orientation, Coordinate, ShotResult} from "./battleships";
 
 describe("Board class", function() {
     describe("constructor function", function() {
@@ -149,6 +149,37 @@ describe("Board class", function() {
                 })
             })
         })     
+    })
+    describe("fireAt function", function() {
+        it("should return a miss for an empty coordinate", function() {
+            expect(new Board().fireAt(new Coordinate(0,0))).to.equal(ShotResult.Miss);
+        })
+        it("should register a hit when fired at a coordinate containing a ship", function() {
+            for (let i = 0; i < 4; i++) {
+                const testBoard = new Board();
+                testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(0,0), 4));
+                expect(testBoard.fireAt(new Coordinate(0,i))).to.equal(ShotResult.Hit);
+            }
+        })        
+        it("should check all ships for a hit", function() {
+            const testBoard = new Board();
+            testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(0,0), 4));
+            testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(1,0), 4));
+            testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(2,0), 4));
+            testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(3,0), 4));
+            expect(testBoard.fireAt(new Coordinate(0,0))).to.equal(ShotResult.Hit);
+            expect(testBoard.fireAt(new Coordinate(1,1))).to.equal(ShotResult.Hit);
+            expect(testBoard.fireAt(new Coordinate(2,2))).to.equal(ShotResult.Hit);
+            expect(testBoard.fireAt(new Coordinate(3,3))).to.equal(ShotResult.Hit);
+        })
+        it.skip("should register a sink when hitting the last surviving square of a ship", function() {
+            const testBoard = new Board();
+            testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(0,0), 4));
+            expect(testBoard.fireAt(new Coordinate(0,0))).to.equal(ShotResult.Hit);
+            expect(testBoard.fireAt(new Coordinate(0,1))).to.equal(ShotResult.Hit);
+            expect(testBoard.fireAt(new Coordinate(0,2))).to.equal(ShotResult.Hit);
+            expect(testBoard.fireAt(new Coordinate(0,3))).to.equal(ShotResult.Sink);
+        })
     })
 })
 

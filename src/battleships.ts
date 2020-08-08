@@ -23,6 +23,20 @@ export class Board {
     private isCoordOnBoard(coord: Coordinate) : boolean {
         return (coord.row >=0 && coord.row < this.rows) && (coord.column >= 0 && coord.column < this.columns);
     }
+
+    fireAt(coordinate : Coordinate) {
+        let result : ShotResult = ShotResult.Miss;
+        if (this.shipList.length > 0 && this.shipList.some(ship=>ship.coordList.some(el => el.equalTo(coordinate)))) {
+            result = ShotResult.Hit;
+        }
+        return result;
+    }
+}
+
+export enum ShotResult {
+    Hit,
+    Miss,
+    Sink
 }
 
 export enum Orientation {
