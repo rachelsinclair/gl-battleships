@@ -172,7 +172,7 @@ describe("Board class", function() {
             expect(testBoard.fireAt(new Coordinate(2,2))).to.equal(ShotResult.Hit);
             expect(testBoard.fireAt(new Coordinate(3,3))).to.equal(ShotResult.Hit);
         })
-        it.skip("should register a sink when hitting the last surviving square of a ship", function() {
+        it("should register a sink when hitting the last surviving square of a ship", function() {
             const testBoard = new Board();
             testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(0,0), 4));
             expect(testBoard.fireAt(new Coordinate(0,0))).to.equal(ShotResult.Hit);
@@ -183,14 +183,13 @@ describe("Board class", function() {
     })
 })
 
-describe("Ship class", function(){
-    describe("Ship constructor", function(){
+describe("Ship class", function() {
+    describe("Ship constructor", function() {
         const testShip = new Ship(Orientation.Horizontal, new Coordinate(0, 0), 4);
         const testShip2 = new Ship(Orientation.Horizontal, new Coordinate(0, 0), 5);
         it("should create an instance of class Ship", function(){
             expect(testShip).to.be.instanceof(Ship);
         })
-
         it("should use length parameter to create an appropriately sized ship", function(){
             expect(testShip.coordList).to.have.length(4);
             expect(testShip2.coordList).to.have.length(5);

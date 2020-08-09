@@ -11,12 +11,12 @@ export class Board {
         return true;
     }
 
-    private canPlaceShip(ship: Ship) : boolean {
-        if (this.shipList.some(shipInList => ship.intersectsWith(shipInList))) {
+    private canPlaceShip(newShip: Ship) : boolean {
+        if (this.shipList.some(existingShip => newShip.intersectsWith(existingShip))) {
             return false;
         }
         else {
-            return ship.coordList.every(coord => this.isCoordOnBoard(coord));
+            return newShip.coordList.every(coord => this.isCoordOnBoard(coord));
         }
     }
 
@@ -26,8 +26,9 @@ export class Board {
 
     fireAt(coordinate : Coordinate) {
         let result : ShotResult = ShotResult.Miss;
-        if (this.shipList.length > 0 && this.shipList.some(ship=>ship.coordList.some(el => el.equalTo(coordinate)))) {
-            result = ShotResult.Hit;
+        const hitShip = this.shipList.find(ship => ship.containsCoord(coordinate));
+        if (hitShip) {
+            result = hitShip.handleShot(coordinate);
         }
         return result;
     }
@@ -46,10 +47,33 @@ export enum Orientation {
 
 export class Ship {
     constructor(public readonly orientation: Orientation, private firstCoordinate: Coordinate, private length : number){}
-    readonly coordList : Coordinate[] = this.firstCoordinate.getRange(this.length, this.orientation);
-
+    private status = this.firstCoordinate.getRange(this.length, this.orientation).map(coord => {return {coordinate: coord, hit: false}});
+    readonly coordList : Coordinate[] = this.status.map(square => square.coordinate);
+ 
     intersectsWith (otherShip: Ship) : boolean {
-        return this.coordList.some(ship1Coord => otherShip.coordList.some(ship2Coord => ship1Coord.equalTo(ship2Coord)))
+        return this.coordList.some(coord => otherShip.containsCoord(coord));
+    }
+
+    containsCoord (coordToCheck: Coordinate) : boolean {
+        return this.coordList.some(coord => coord.equalTo(coordToCheck));
+    }
+
+    handleShot (coord : Coordinate) : ShotResult {
+        const idx = this.status.findIndex(square => square.coordinate.equalTo(coord));
+        if (this.status[idx].hit) {
+            return ShotResult.Miss;
+        }
+        else {
+            this.status[idx].hit = true;
+            if (this.isSunk()) {
+                return ShotResult.Sink;
+            }
+            return ShotResult.Hit;
+        }
+    }
+
+    isSunk() : boolean {
+        return this.status.every(square => square.hit);
     }
 
 }
