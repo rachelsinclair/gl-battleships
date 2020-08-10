@@ -12,15 +12,10 @@ export class Board {
     }
 
     private canPlaceShip(newShip: Ship) : boolean {
-        if (this.shipList.some(existingShip => newShip.intersectsWith(existingShip))) {
-            return false;
-        }
-        else {
-            return newShip.coordList.every(coord => this.isCoordOnBoard(coord));
-        }
+        return newShip.fitsOnBoard(this) && !this.shipList.some(existingShip => newShip.intersectsWith(existingShip));
     }
 
-    private isCoordOnBoard(coord: Coordinate) : boolean {
+    isCoordOnBoard(coord: Coordinate) : boolean {
         return (coord.row >=0 && coord.row < this.rows) && (coord.column >= 0 && coord.column < this.columns);
     }
 
@@ -48,23 +43,29 @@ export enum Orientation {
 export class Ship {
     constructor(public readonly orientation: Orientation, private firstCoordinate: Coordinate, private length : number){}
     private status = this.firstCoordinate.getRange(this.length, this.orientation).map(coord => {return {coordinate: coord, hit: false}});
-    readonly coordList : Coordinate[] = this.status.map(square => square.coordinate);
  
     intersectsWith (otherShip: Ship) : boolean {
-        return this.coordList.some(coord => otherShip.containsCoord(coord));
+        return this.status.some(square => otherShip.containsCoord(square.coordinate));
+    }
+
+    fitsOnBoard (board : Board) : boolean {
+        return this.status.every(square => board.isCoordOnBoard(square.coordinate));
     }
 
     containsCoord (coordToCheck: Coordinate) : boolean {
-        return this.coordList.some(coord => coord.equalTo(coordToCheck));
+        return this.status.some(square => square.coordinate.equalTo(coordToCheck));
     }
 
     handleShot (coord : Coordinate) : ShotResult {
-        const idx = this.status.findIndex(square => square.coordinate.equalTo(coord));
-        if (this.status[idx].hit) {
+        const target = this.status.find(square => square.coordinate.equalTo(coord));
+        if (!target) {
+            return ShotResult.Miss;
+        }
+        if (target.hit) {
             return ShotResult.Miss;
         }
         else {
-            this.status[idx].hit = true;
+            target.hit = true;
             if (this.isSunk()) {
                 return ShotResult.Sink;
             }
