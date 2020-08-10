@@ -181,6 +181,23 @@ describe("Board class", function() {
             expect(testBoard.fireAt(new Coordinate(0,3))).to.equal(ShotResult.Sink);
         })
     })
+    describe("liveShipCount function", function() {
+        it("should return 0 on a brand new, empty board", function () {
+            const testBoard = new Board();
+            expect(testBoard.liveShipCount()).to.equal(0);
+        })
+        it("should increment by 1 when a ship is added to the board", function () {
+            const testBoard = new Board();
+            testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(0,0), 1));
+            expect(testBoard.liveShipCount()).to.equal(1);
+        })
+        it("should decrement 1 when a ship is destroyed", function () {
+            const testBoard = new Board();
+            testBoard.addShip(new Ship(Orientation.Horizontal, new Coordinate(0,0), 1));
+            testBoard.fireAt(new Coordinate(0, 0));
+            expect(testBoard.liveShipCount()).to.equal(0);
+        })
+    })
 })
 
 describe("Ship class", function() {

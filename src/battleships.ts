@@ -27,6 +27,10 @@ export class Board {
         }
         return result;
     }
+
+    liveShipCount() : number {
+        return this.shipList.filter(ship => !ship.isSunk()).length;
+    }
 }
 
 export enum ShotResult {
