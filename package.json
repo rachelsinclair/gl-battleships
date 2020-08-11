@@ -4,8 +4,21 @@
   "description": "Implementation of Battleships for Guestline code test",
   "main": "battleships.js",
   "scripts": {
-    "test": "mocha -r ts-node/register src/*.test.ts",
-    "test:watch": "npm test -- --watch --extension ts"
+    "test": "nyc mocha",
+    "test:watch": "mocha -watch"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "reporter": [
+      "text-summary"
+    ],
+    "all": true
+  },
+  "mocha": {
+    "require": "ts-node/register, source-map-support/register",
+    "recursive": true,
+    "spec": "src/*.test.ts",
+    "extension": "ts"
   },
   "repository": {
     "type": "git",
@@ -18,11 +31,14 @@
   },
   "homepage": "https://github.com/rachelsinclair/gl-battleships#readme",
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.0",
     "@types/node": "^14.0.26",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },
