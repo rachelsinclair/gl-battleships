@@ -198,6 +198,13 @@ describe("Board class", function() {
             expect(testBoard.liveShipCount()).to.equal(0);
         })
     })
+    describe("init function", function() {
+        it("should place three ships on the board", function() {
+            const testBoard = new Board;
+            testBoard.init();            
+            expect(testBoard.liveShipCount()).to.equal(3);
+        })
+    })
 })
 
 describe("Ship class", function() {

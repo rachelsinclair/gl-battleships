@@ -31,6 +31,35 @@ export class Board {
     liveShipCount() : number {
         return this.shipList.filter(ship => !ship.isSunk()).length;
     }
+
+    init() {
+        const ships = [5, 4, 4];
+        ships.forEach(ship => this.generateShip(ship));
+        return;
+    }
+
+    private generateShip(length : number) {
+        for (let i = 0; i < 100; i++) {
+            let orientation = randomInt(1) as Orientation;
+            let startCoord = this.getValidStartCoordinate(orientation, length);
+            let generatedShip = new Ship(orientation, startCoord, length);
+            if (this.addShip(generatedShip)) return;
+        }
+        throw new Error("Unable to place ship");
+    }
+
+    private getValidStartCoordinate(orientation: Orientation, length: number) {
+        if (orientation === Orientation.Horizontal) {
+            return new Coordinate(randomInt(this.rows - 1), randomInt(this.columns - length));
+        }
+        else {
+            return new Coordinate(randomInt(this.rows - length), randomInt(this.columns - 1));
+        }
+    }
+}
+
+function randomInt (maxValue : number) {
+    return Math.floor(Math.random() * (maxValue + 1));
 }
 
 export enum ShotResult {
@@ -45,7 +74,7 @@ export enum Orientation {
 }
 
 export class Ship {
-    constructor(public readonly orientation: Orientation, private firstCoordinate: Coordinate, private length : number){}
+    constructor(private orientation: Orientation, private firstCoordinate: Coordinate, private length : number){}
     private status = this.firstCoordinate.getRange(this.length, this.orientation).map(coord => {return {coordinate: coord, hit: false}});
  
     intersectsWith (otherShip: Ship) : boolean {
