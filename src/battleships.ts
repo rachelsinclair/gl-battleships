@@ -2,6 +2,7 @@ export class Board {
     readonly columns: number = 10;
     readonly rows: number = 10;
     private shipList: Ship[] = [];
+    cellsTried: Coordinate[] = [];
 
     addShip(ship: Ship) : boolean {
         if (!this.canPlaceShip(ship)) {
@@ -25,6 +26,7 @@ export class Board {
         if (hitShip) {
             result = hitShip.handleShot(coordinate);
         }
+        this.cellsTried.push(coordinate);
         return result;
     }
 
@@ -33,6 +35,7 @@ export class Board {
     }
 
     init() {
+        this.shipList = [];
         const ships = [5, 4, 4];
         ships.forEach(ship => this.generateShip(ship));
         return;
@@ -55,6 +58,10 @@ export class Board {
         else {
             return new Coordinate(randomInt(this.rows - length), randomInt(this.columns - 1));
         }
+    }
+
+    hasAlreadyBeenTried (coordinate : Coordinate) : boolean {
+        return this.cellsTried.some(cell => cell.equalTo(coordinate));
     }
 }
 
@@ -113,7 +120,7 @@ export class Ship {
 }
 
 export class Coordinate {
-    constructor(public readonly row: number, public readonly column: number){        
+    constructor(public readonly row: number, public readonly column: number){
     }
 
     equalTo(coord: Coordinate) : boolean {
