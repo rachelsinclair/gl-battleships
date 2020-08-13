@@ -7,7 +7,6 @@
   "type": "commonjs",
   "scripts": {
     "start": "serve",
-    "start-compile:watch": "serve & tsc -w",
     "compile": "tsc",
     "compile:watch": "tsc -w",
     "test": "nyc mocha",
