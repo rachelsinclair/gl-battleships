@@ -7,3 +7,6 @@ build/
 # istanbul output
 coverage/
 .nyc_output
+
+[alias]
+	sync-ghpages = !git checkout gh-pages && git rebase master && git push origin gh-pages && git checkout master
