@@ -2,7 +2,7 @@ export class Board {
     readonly columns: number = 10;
     readonly rows: number = 10;
     private shipList: Ship[] = [];
-    cellsTried: Coordinate[] = [];
+    private cellsTried: Coordinate[] = [];
 
     addShip(ship: Ship) : boolean {
         if (!this.canPlaceShip(ship)) {
@@ -20,7 +20,7 @@ export class Board {
         return (coord.row >=0 && coord.row < this.rows) && (coord.column >= 0 && coord.column < this.columns);
     }
 
-    fireAt(coordinate : Coordinate) {
+    fireAt(coordinate : Coordinate) : ShotResult {
         let result : ShotResult = ShotResult.Miss;
         const hitShip = this.shipList.find(ship => ship.containsCoord(coordinate));
         if (hitShip) {
@@ -34,8 +34,9 @@ export class Board {
         return this.shipList.filter(ship => !ship.isSunk()).length;
     }
 
-    init() {
+    init() : void {
         this.shipList = [];
+        this.cellsTried = [];
         const ships = [5, 4, 4];
         ships.forEach(ship => this.generateShip(ship));
         return;
@@ -43,9 +44,9 @@ export class Board {
 
     private generateShip(length : number) {
         for (let i = 0; i < 100; i++) {
-            let orientation = randomInt(1) as Orientation;
-            let startCoord = this.getValidStartCoordinate(orientation, length);
-            let generatedShip = new Ship(orientation, startCoord, length);
+            const orientation = randomInt(1) as Orientation;
+            const startCoord = this.getValidStartCoordinate(orientation, length);
+            const generatedShip = new Ship(orientation, startCoord, length);
             if (this.addShip(generatedShip)) return;
         }
         throw new Error("Unable to place ship");
@@ -137,7 +138,7 @@ export class Coordinate {
     }
 
     getRange(length : number, orientation : Orientation) : Coordinate[] {
-        let range : Coordinate[] = [];
+        const range : Coordinate[] = [];
         let currentCoordinate = this as Coordinate;
         for (let i = 0; i < length; i++) {
             range.push(currentCoordinate);

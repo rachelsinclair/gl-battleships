@@ -207,15 +207,6 @@ describe("Board class", function() {
     })
 })
 
-describe("Ship class", function() {
-    describe("Ship constructor", function() {
-        const testShip = new Ship(Orientation.Horizontal, new Coordinate(0, 0), 4);
-        it("should create an instance of class Ship", function(){
-            expect(testShip).to.be.instanceof(Ship);
-        })
-    })
-})
-
 describe("Coordinate class", function() {
     describe("equalTo function", function() {
         it("should return true when checking a set of coordinates against itself", function() {
