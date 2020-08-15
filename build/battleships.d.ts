@@ -2,7 +2,7 @@ export declare class Board {
     readonly columns: number;
     readonly rows: number;
     private shipList;
-    cellsTried: Coordinate[];
+    private cellsTried;
     addShip(ship: Ship): boolean;
     private canPlaceShip;
     isCoordOnBoard(coord: Coordinate): boolean;

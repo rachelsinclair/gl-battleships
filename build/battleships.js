@@ -32,15 +32,16 @@ export class Board {
     }
     init() {
         this.shipList = [];
+        this.cellsTried = [];
         const ships = [5, 4, 4];
         ships.forEach(ship => this.generateShip(ship));
         return;
     }
     generateShip(length) {
         for (let i = 0; i < 100; i++) {
-            let orientation = randomInt(1);
-            let startCoord = this.getValidStartCoordinate(orientation, length);
-            let generatedShip = new Ship(orientation, startCoord, length);
+            const orientation = randomInt(1);
+            const startCoord = this.getValidStartCoordinate(orientation, length);
+            const generatedShip = new Ship(orientation, startCoord, length);
             if (this.addShip(generatedShip))
                 return;
         }
@@ -125,7 +126,7 @@ export class Coordinate {
         }
     }
     getRange(length, orientation) {
-        let range = [];
+        const range = [];
         let currentCoordinate = this;
         for (let i = 0; i < length; i++) {
             range.push(currentCoordinate);

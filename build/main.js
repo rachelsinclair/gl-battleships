@@ -7,12 +7,13 @@ var CellState;
 })(CellState || (CellState = {}));
 class Grid {
     constructor() {
-        this.margin = { top: 60, left: 60 };
+        this.margin = { vertical: 60, horizontal: 60 };
         this.cellSize = 40;
         this.cellSpacing = 1;
         this.gameBoard = new Board;
     }
     draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < this.gameBoard.rows; i++) {
             for (let j = 0; j < this.gameBoard.columns; j++) {
                 drawCell(new Coordinate(i, j), CellState.Hidden);
@@ -23,10 +24,10 @@ class Grid {
         ctx.textBaseline = "middle";
         ctx.fillStyle = "black";
         for (let i = 0; i < this.gameBoard.columns; i++) {
-            ctx.fillText(String.fromCharCode(65 + i), i * (this.cellSize + this.cellSpacing) + this.margin.left + this.cellSize / 2, this.margin.top - 20);
+            ctx.fillText(String.fromCharCode(65 + i), i * (this.cellSize + this.cellSpacing) + this.margin.horizontal + this.cellSize / 2, this.margin.vertical - 20);
         }
         for (let i = 0; i < this.gameBoard.rows; i++) {
-            ctx.fillText(i.toString(), this.margin.left - 30, i * (this.cellSize + this.cellSpacing) + this.margin.top + this.cellSize / 2);
+            ctx.fillText(i.toString(), this.margin.horizontal - 30, i * (this.cellSize + this.cellSpacing) + this.margin.vertical + this.cellSize / 2);
         }
     }
     updateMessage(msg) {
@@ -36,12 +37,12 @@ class Grid {
         ctx.fillStyle = "black";
         ctx.clearRect(500, 100, 150, 60);
         msg.split("\n").map((line, idx) => ctx.fillText(line, 500, 100 + idx * 25, 150));
-        console.log(msg);
     }
-    win() {
-        grid.updateMessage("You win! 🎉🎉🎉");
-        canvas.removeEventListener("click", handleClick, true);
-    }
+}
+function win() {
+    grid.updateMessage("You win! 🎉🎉🎉");
+    canvas.removeEventListener("click", handleClick, true);
+    button.style.display = "inline-block";
 }
 function drawCell(coord, state) {
     switch (state) {
@@ -60,8 +61,10 @@ function drawCell(coord, state) {
     }
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.clearRect(coord.column * (grid.cellSize + grid.cellSpacing) + grid.margin.left, coord.row * (grid.cellSize + grid.cellSpacing) + grid.margin.top, grid.cellSize, grid.cellSize);
-    ctx.rect(coord.column * (grid.cellSize + grid.cellSpacing) + grid.margin.left, coord.row * (grid.cellSize + grid.cellSpacing) + grid.margin.top, grid.cellSize, grid.cellSize);
+    const leftPos = coord.column * (grid.cellSize + grid.cellSpacing) + grid.margin.horizontal;
+    const topPos = coord.row * (grid.cellSize + grid.cellSpacing) + grid.margin.vertical;
+    ctx.clearRect(leftPos, topPos, grid.cellSize, grid.cellSize);
+    ctx.rect(leftPos, topPos, grid.cellSize, grid.cellSize);
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
@@ -86,21 +89,29 @@ function handleClick(e) {
             drawCell(clickedCoordinate, CellState.Hit);
             grid.updateMessage("Hit!\nYou sunk a ship!");
             if (grid.gameBoard.liveShipCount() === 0) {
-                grid.win();
+                win();
             }
         }
     }
 }
 function getCoordFromCanvasPos(x, y) {
-    const row = Math.floor((y - grid.margin.top) / (grid.cellSize + grid.cellSpacing));
-    const column = Math.floor((x - grid.margin.left) / (grid.cellSize + grid.cellSpacing));
+    const row = Math.floor((y - grid.margin.vertical) / (grid.cellSize + grid.cellSpacing));
+    const column = Math.floor((x - grid.margin.horizontal) / (grid.cellSize + grid.cellSpacing));
     return new Coordinate(row, column);
 }
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.addEventListener("click", handleClick, true);
 const rect = canvas.getBoundingClientRect();
 const grid = new Grid;
-grid.gameBoard.init();
-grid.draw();
+const button = document.getElementById("replay");
+button.addEventListener("click", () => {
+    button.style.display = "none";
+    playGame();
+});
+playGame();
+function playGame() {
+    canvas.addEventListener("click", handleClick, true);
+    grid.gameBoard.init();
+    grid.draw();
+}
 //# sourceMappingURL=main.js.map
