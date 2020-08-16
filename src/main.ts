@@ -12,54 +12,75 @@ class Grid {
   cellSpacing = 1;
   gameBoard = new Board;
 
-  draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawGrid() {
+    clearCanvas();
+    this.drawAllCells();
+    this.drawHeadings();
+  }
+
+  private drawAllCells() {
     for (let i = 0; i < this.gameBoard.rows; i++) {
-      for (let j = 0; j < this.gameBoard.columns ; j++) {
+      for (let j = 0; j < this.gameBoard.columns; j++) {
         drawCell(new Coordinate(i, j), CellState.Hidden);
       }
     }
-    ctx.font = '30px sans-serif';
+  }
+
+  private drawHeadings() {
+    ctx.font = "30px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "black";
     for (let i = 0; i < this.gameBoard.columns; i++) {
-      ctx.fillText(String.fromCharCode(65 + i), i * (this.cellSize + this.cellSpacing) + this.margin.horizontal + this.cellSize/2, this.margin.vertical-20);
+      ctx.fillText(String.fromCharCode(65 + i), i * (this.cellSize + this.cellSpacing) + this.margin.horizontal + this.cellSize / 2, this.margin.vertical - 20);
     }
     for (let i = 0; i < this.gameBoard.rows; i++) {
-      ctx.fillText(i.toString(), this.margin.horizontal-30, i * (this.cellSize + this.cellSpacing) + this.margin.vertical + this.cellSize/2);
+      ctx.fillText(i.toString(), this.margin.horizontal - 30, i * (this.cellSize + this.cellSpacing) + this.margin.vertical + this.cellSize / 2);
     }
   }
-
-  updateMessage(msg : string) {
-    ctx.font = '20px sans-serif';
-    ctx.textAlign = "start";
-    ctx.textBaseline = "top";
-    ctx.fillStyle = "black";
-    ctx.clearRect(500, 100, 150, 60);
-    msg.split("\n").map((line,idx) => ctx.fillText(line, 500, 100+idx*25, 150));
-  }
 }
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function updateMessage(msg : string) {
+  ctx.font = "20px sans-serif";
+  ctx.textAlign = "start";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "black";
+  ctx.clearRect(500, 100, 150, 60);
+  const lineHeight = 25;
+  msg.split("\n").map((line,idx) => ctx.fillText(line, 500, 100 + (idx*lineHeight), 150));
+}
+
+function playGame() {
+  canvas.addEventListener("click", handleClick, true);
+  grid.gameBoard.init();
+  grid.drawGrid();
+}
+
 function win() {
-    grid.updateMessage("You win! 🎉🎉🎉");
-    canvas.removeEventListener("click", handleClick, true);
-    button.style.display = "inline-block";
-  }
+  updateMessage("You win! 🎉🎉🎉");
+  canvas.removeEventListener("click", handleClick, true);
+  button.style.display = "inline-block";
+}
+
 function drawCell (coord : Coordinate, state : CellState) {
   switch (state) {
     case CellState.Hidden:
       ctx.fillStyle = "lightgrey";
-      ctx.strokeStyle = 'darkgrey';
+      ctx.strokeStyle = "darkgrey";
       break;
     case CellState.Empty:
       ctx.fillStyle = "transparent";
-      ctx.strokeStyle = 'darkgrey';
+      ctx.strokeStyle = "darkgrey";
       break;
     case CellState.Hit:
       ctx.fillStyle = "red";
-      ctx.strokeStyle = 'yellow';
+      ctx.strokeStyle = "yellow";
       break;
-  }
+    }
   ctx.beginPath();
   ctx.lineWidth = 1;
   const leftPos = coord.column * (grid.cellSize + grid.cellSpacing) + grid.margin.horizontal;
@@ -72,24 +93,24 @@ function drawCell (coord : Coordinate, state : CellState) {
 }
 
 function handleClick (e : MouseEvent) {
-  const canvasPos = {
+    const canvasPos = {
     x: e.clientX - rect.left,
     y: e.clientY - rect.top
   };
   const clickedCoordinate = getCoordFromCanvasPos(canvasPos.x, canvasPos.y);
-  if (grid.gameBoard.isCoordOnBoard(clickedCoordinate) && !grid.gameBoard.hasAlreadyBeenTried(clickedCoordinate)) {
+  if (grid.gameBoard.isValidCoord(clickedCoordinate) && !grid.gameBoard.hasAlreadyBeenTried(clickedCoordinate)) {
     const result = grid.gameBoard.fireAt(clickedCoordinate);
     if(result === ShotResult.Miss) {
       drawCell(clickedCoordinate, CellState.Empty);
-      grid.updateMessage("Missed.");
+      updateMessage("Missed.");
     }
     else if (result === ShotResult.Hit) {
       drawCell(clickedCoordinate, CellState.Hit);
-      grid.updateMessage("Hit!");
+      updateMessage("Hit!");
     }
     else if (result === ShotResult.Sink) {
       drawCell(clickedCoordinate, CellState.Hit);
-      grid.updateMessage("Hit!\nYou sunk a ship!")
+      updateMessage("Hit!\nYou sunk a ship!");
       if (grid.gameBoard.liveShipCount() === 0) {
         win();
       }
@@ -110,12 +131,7 @@ const grid = new Grid;
 const button = <HTMLButtonElement> document.getElementById("replay");
 button.addEventListener("click",()=>{
   button.style.display = "none";
-playGame();})
+  playGame();
+})
 
 playGame();
-
-function playGame() {
-  canvas.addEventListener("click", handleClick, true);
-  grid.gameBoard.init();
-  grid.draw();
-}

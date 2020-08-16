@@ -1,3 +1,18 @@
+function randomInt (maxValue : number) {
+    return Math.floor(Math.random() * (maxValue + 1));
+}
+
+export enum ShotResult {
+    Hit,
+    Miss,
+    Sink
+}
+
+export enum Orientation {
+    Vertical,
+    Horizontal
+}
+
 export class Board {
     readonly columns: number = 10;
     readonly rows: number = 10;
@@ -16,7 +31,7 @@ export class Board {
         return newShip.fitsOnBoard(this) && !this.shipList.some(existingShip => newShip.intersectsWith(existingShip));
     }
 
-    isCoordOnBoard(coord: Coordinate) : boolean {
+    isValidCoord(coord: Coordinate) : boolean {
         return (coord.row >=0 && coord.row < this.rows) && (coord.column >= 0 && coord.column < this.columns);
     }
 
@@ -66,20 +81,7 @@ export class Board {
     }
 }
 
-function randomInt (maxValue : number) {
-    return Math.floor(Math.random() * (maxValue + 1));
-}
 
-export enum ShotResult {
-    Hit,
-    Miss,
-    Sink
-}
-
-export enum Orientation {
-    Vertical,
-    Horizontal
-}
 
 export class Ship {
     constructor(private orientation: Orientation, private firstCoordinate: Coordinate, private length : number){}
@@ -90,7 +92,7 @@ export class Ship {
     }
 
     fitsOnBoard (board : Board) : boolean {
-        return this.status.every(square => board.isCoordOnBoard(square.coordinate));
+        return this.status.every(square => board.isValidCoord(square.coordinate));
     }
 
     containsCoord (coordToCheck: Coordinate) : boolean {
